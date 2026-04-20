@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     libvirt-daemon-system \
     libvirt-clients
 
-RUN groupadd swtpm && useradd -g swtpm -d /var/lib/swtpm -s /usr/sbin/nologin swtpm
+RUN getent group swtpm || groupadd swtpm && \
+    getent passwd swtpm || useradd -g swtpm -d /var/lib/swtpm -s /usr/sbin/nologin swtpm
 
 
 RUN ln -sfv /etc/libvirt/qemu/networks/default.xml /etc/libvirt/qemu/networks/autostart/default.xml
