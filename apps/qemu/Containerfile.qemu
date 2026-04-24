@@ -21,3 +21,4 @@ RUN getent group qemu || groupadd qemu && \
 
 
 RUN rm /etc/libvirt/qemu/networks/autostart/default.xml
+RUN rm /etc/libvirt/qemu/networks/default.xml
