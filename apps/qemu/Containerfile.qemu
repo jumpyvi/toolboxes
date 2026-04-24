@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
     qemu-system-misc \
     swtpm \
     libvirt-daemon-system \
-    libvirt-clients
+    libvirt-clients \
+    libegl1
 
 
 RUN getent group swtpm || groupadd swtpm && \
@@ -19,4 +20,4 @@ RUN getent group qemu || groupadd qemu && \
     getent passwd qemu || useradd -g qemu -d /var/lib/qemu -s /usr/sbin/nologin qemu
 
 
-RUN ln -sfv /etc/libvirt/qemu/networks/default.xml /etc/libvirt/qemu/networks/autostart/default.xml
+RUN rm /etc/libvirt/qemu/networks/autostart/default.xml
