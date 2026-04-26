@@ -1,4 +1,4 @@
-FROM ubuntu:questing
+FROM ubuntu:resolute
 
 RUN apt-get update && apt-get install -y \
     qemu-system-x86 \
@@ -12,13 +12,13 @@ RUN apt-get update && apt-get install -y \
     libvirt-clients \
     libegl1
 
+RUN rm -f /etc/libvirt/qemu/networks/autostart/default.xml && \
+    rm -f /etc/libvirt/qemu/networks/default.xml
 
-RUN getent group swtpm || groupadd swtpm && \
-    getent passwd swtpm || useradd -g swtpm -d /var/lib/swtpm -s /usr/sbin/nologin swtpm
+RUN echo 'user = "root"' >> /etc/libvirt/qemu.conf && \
+    echo 'group = "root"' >> /etc/libvirt/qemu.conf && \
+    echo 'swtpm_user = "root"' >> /etc/libvirt/qemu.conf && \
+    echo 'swtpm_group = "root"' >> /etc/libvirt/qemu.conf
 
-RUN getent group qemu || groupadd qemu && \
-    getent passwd qemu || useradd -g qemu -d /var/lib/qemu -s /usr/sbin/nologin qemu
-
-
-RUN rm /etc/libvirt/qemu/networks/autostart/default.xml
-RUN rm /etc/libvirt/qemu/networks/default.xml
+RUN echo 'unix_sock_group = "root"' >> /etc/libvirt/libvirtd.conf && \
+    echo 'unix_sock_rw_perms = "0770"' >> /etc/libvirt/libvirtd.conf
